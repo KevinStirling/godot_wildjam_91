@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Game Template"
+config/name="Shoplifter"
 run/main_scene="res://scenes/opening/opening.tscn"
 config/features=PackedStringArray("4.6")
 config/icon="res://icon.png"
@@ -33,6 +33,7 @@ enabled=PackedStringArray("res://addons/maaacks_game_template/plugin.cfg")
 
 [gui]
 
+theme/custom="res://resources/themes/lab.tres"
 common/drop_mouse_on_gui_input_disabled=true
 
 [input]

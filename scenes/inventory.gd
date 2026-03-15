@@ -6,6 +6,9 @@ extends Control
 var cell_size : Vector2 = Vector2(32,32)
 var cells : int
 var prev_cells : int
+var prev_rows: int
+var prev_cols: int
+var prev_size : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -40,11 +43,14 @@ func load_grid():
 				for i in range(cell_diff):
 					var c = cell_sprite.instantiate()
 					%GridContainer.add_child(c)
-	else:
+	elif cells != 0:
 		for i in range(cells):
 			var c = cell_sprite.instantiate()
 			%GridContainer.add_child(c)
 	prev_cells = cells
+	prev_rows = int(size.y / cell_size.y)
+	prev_cols = %GridContainer.columns
+	prev_size = size
 
 func _on_resized() -> void:
 	get_avil_cell_space()

@@ -99,6 +99,11 @@ interact={
 
 locale/translations=PackedStringArray("res://addons/maaacks_game_template/base/translations/menus_translations.en.translation", "res://addons/maaacks_game_template/base/translations/menus_translations.fr.translation")
 
+[layer_names]
+
+2d_physics/layer_3="Inventory Grid"
+2d_physics/layer_4="ItemShapeGrid"
+
 [maaacks_game_template]
 
 copy_path="res://"

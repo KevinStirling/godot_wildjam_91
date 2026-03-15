@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://brj4ux4w8ps8d"]
+
+[ext_resource type="Script" uid="uid://kml273sp0yw3" path="res://scenes/components/dragable/dragable.gd" id="1_4onnk"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vsuxy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4onnk"]
+size = Vector2(32, 32)
+
+[node name="DragableItem" type="Node2D" unique_id=1849446848]
+script = ExtResource("1_4onnk")
+
+[node name="ItemSprite" type="Sprite2D" parent="." unique_id=586039638]
+unique_name_in_owner = true
+scale = Vector2(32, 32)
+texture = SubResource("PlaceholderTexture2D_vsuxy")
+
+[node name="DragHandle" type="Button" parent="." unique_id=174580916]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+flat = true
+
+[node name="ItemShapeGrid" type="Area2D" parent="." unique_id=1201770406]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemShapeGrid" unique_id=866473998]
+shape = SubResource("RectangleShape2D_4onnk")
+
+[connection signal="button_down" from="DragHandle" to="." method="_on_drag_handle_button_down"]
+[connection signal="button_up" from="DragHandle" to="." method="_on_drag_handle_button_up"]
+[connection signal="area_entered" from="ItemShapeGrid" to="." method="_on_item_shape_grid_area_entered"]
+[connection signal="area_exited" from="ItemShapeGrid" to="." method="_on_item_shape_grid_area_exited"]

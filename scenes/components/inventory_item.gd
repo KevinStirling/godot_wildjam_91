@@ -27,6 +27,7 @@ func _process(_delta: float) -> void:
 
 func rotate_item() -> void:
 	rotated = !rotated
+	print(rotated)
 	var tween = get_tree().create_tween()
 	tween.tween_property(%Sprite2D, "rotation_degrees", 90, .1)
 	await tween.finished
@@ -44,6 +45,7 @@ func _on_button_button_down() -> void:
 
 
 func _on_button_button_up() -> void:
+	print("button up triggered")
 	dragging = false
 	MouseDrag.current_item = null
 	offset = Vector2.ZERO

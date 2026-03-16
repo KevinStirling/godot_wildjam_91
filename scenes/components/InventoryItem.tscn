@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dsfqlvjfrc1y2"]
+
+[ext_resource type="Script" uid="uid://dhmxb6flq27ht" path="res://scenes/components/inventory_item.gd" id="1_vsq72"]
+[ext_resource type="Texture2D" uid="uid://dysm8487ilvmn" path="res://assets/inventory/red.png" id="2_77bdw"]
+
+[node name="InventoryItem" type="Node2D" unique_id=162563165]
+script = ExtResource("1_vsq72")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=694721701]
+unique_name_in_owner = true
+texture_filter = 1
+texture = ExtResource("2_77bdw")
+centered = false
+
+[node name="Button" type="Button" parent="." unique_id=438679773]
+offset_right = 64.0
+offset_bottom = 32.0
+mouse_filter = 1
+flat = true
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]

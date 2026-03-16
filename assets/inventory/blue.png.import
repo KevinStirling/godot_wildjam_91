@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw38oq6qiqhrd"
-path="res://.godot/imported/grid_cell.png-cd7b46a629c0bcd0ce95a15ab17c27dc.ctex"
+uid="uid://diu11eyv6c8rs"
+path="res://.godot/imported/blue.png-9439e5a7fdf5742c746b83fc6551b4c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/components/inventory/grid_cell.png"
-dest_files=["res://.godot/imported/grid_cell.png-cd7b46a629c0bcd0ce95a15ab17c27dc.ctex"]
+source_file="res://assets/inventory/blue.png"
+dest_files=["res://.godot/imported/blue.png-9439e5a7fdf5742c746b83fc6551b4c9.ctex"]
 
 [params]
 

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ceqtmv3xd3upn"]
+
+[ext_resource type="Texture2D" uid="uid://c3f5odp5rlcdn" path="res://assets/inventory/orange.png" id="1_kslff"]
+[ext_resource type="Script" uid="uid://56suq6ithj53" path="res://scenes/components/grid_cell.gd" id="1_necwt"]
+
+[node name="GridCell" type="Control" unique_id=1918537843]
+layout_mode = 3
+anchor_right = 0.025
+anchor_bottom = 0.044000003
+offset_right = -32.0
+offset_bottom = -31.680002
+script = ExtResource("1_necwt")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1050593124]
+texture = ExtResource("1_kslff")
+centered = false

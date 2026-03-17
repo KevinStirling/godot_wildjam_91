@@ -21,36 +21,32 @@ func _ready() -> void:
 func _handle_item_drop(item: InventoryItem, pos: Vector2):
 	# check if global_position of item is within inventory bounds
 	var grid_bounds = global_position + Vector2(dimensions.x * cell_size, dimensions.y *cell_size)
+	print(grid_bounds)
 	if grid_bounds.x > pos.x && global_position.x < pos.x && grid_bounds.y > pos.y && global_position.y < pos.y:
+		# get the items dimensions
 		var item_area = item.get_area_size()
-		print("sucess")
-		var min_coords = Vector2i(pos.y / cell_size, pos.x / cell_size)
-		# need to account for item.dimensions to make sure it stays on the grid
+		# adjust the position to be local based on the position in global space
+		var adjusted_pos = abs(global_position - pos)
+		# calculate the min_coords (top left corner) and the max_coords (bottom right corner) of item
+		var min_coords = Vector2i(adjusted_pos.y / cell_size, adjusted_pos.x / cell_size)
 		var max_coords = min_coords + (item_area - Vector2i.ONE)
-
-
-		print(min_coords, max_coords)
+		# get all overlapping grid coordinates
+		var colls = get_grid_area_collisions(min_coords, max_coords)
+		# check to see if the coords are valid drop locations
+		for c in range(colls.size()):
+			if !grid_ui.has(c):
+				break
+				if grid_contents[colls[c].x][colls[c].y] != null:
+					print("blocked")
+					# yeet 
 		
-
-		# replace the zeros with something that gets the right val
-		if min_coords.x >= 0 && max_coords.x <= (dimensions.x - 1) && min_coords.y >= 0 && max_coords.y <= (dimensions.y - 1):
-			print("in da grid")
-			var colls = get_grid_area_collisions(min_coords, max_coords)
-			print(colls)
-			
-
-			item.position = grid_ui[min_coords.x][min_coords.y].position
-		# check if there is an item in and of the dimensions
-		
-		
+		if item.rotated:
+			item.position = grid_ui[min_coords.x][min_coords.y].global_position+ Vector2(cell_size *.5, 0)
+		else:
+			item.position = grid_ui[min_coords.x][min_coords.y].global_position+ Vector2(0, cell_size * .5)
 
 
-
-	
 		# loop through colls to put each coord in grid_contents
-	
-
-
 
 	# if not, fling the item away idk
 	# if is, get items origin, use items dimension to determin amount of space
@@ -63,11 +59,13 @@ func get_grid_area_collisions(lower_bound: Vector2i, upper_bound: Vector2i) -> A
 	collisions.append(lower_bound)
 	collisions.append(upper_bound)
 	for x in range(upper_bound.x - lower_bound.x):
-		print(x)
-		collisions.append(Vector2i(lower_bound.x + (x + 1), lower_bound.y))
+		var c = Vector2i(lower_bound.x + (x + 1), lower_bound.y)
+		if !collisions.has(c):
+			collisions.append(Vector2i(lower_bound.x + (x + 1), lower_bound.y))
 	for y in range(upper_bound.y - lower_bound.y):
-		print("y")
-		collisions.append(Vector2i(lower_bound.x, lower_bound.y + (y + 1)))
+		var c = Vector2i(lower_bound.x, lower_bound.y + (y + 1))
+		if !collisions.has(c):
+			collisions.append(Vector2i(lower_bound.x, lower_bound.y + (y + 1)))
 	return collisions
 
 # func _gui_input(event: InputEvent) -> void:
@@ -80,7 +78,6 @@ func get_grid_area_collisions(lower_bound: Vector2i, upper_bound: Vector2i) -> A
 			# var coords = Vector2i(event.position.y / cell_size, event.position.x / cell_size)
 			# print(grid_ui[coords.x][coords.y])
 			# If holding an item, get the item size and use it as an offset to determine the
-			# grid_ui under the top left corner
 
 func build_grid_data() -> void:
 	var rows: Array = []
@@ -137,3 +134,7 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if MouseDrag.dragging:
 		MouseDrag.current_item.enable_snap = false
+
+
+func _on_focus_entered() -> void:
+	print("focued")

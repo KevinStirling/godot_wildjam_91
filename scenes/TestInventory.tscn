@@ -5,8 +5,26 @@
 
 [node name="TestInventory" type="Node2D" unique_id=1087865670]
 
-[node name="Inventory" parent="." unique_id=607024394 instance=ExtResource("1_lh0fq")]
+[node name="Control" type="Control" parent="." unique_id=1083443518]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 520.0
+offset_top = 262.0
+offset_right = 520.0
+offset_bottom = 262.0
+
+[node name="Inventory" parent="Control" unique_id=607024394 instance=ExtResource("1_lh0fq")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="InventoryItem" parent="." unique_id=162563165 instance=ExtResource("2_6uflk")]
 position = Vector2(294, 150)
-dimensions = Vector2i(1, 2)
+dimensions = Vector2i(2, 1)
+
+[connection signal="focus_entered" from="Control/Inventory" to="Control/Inventory" method="_on_focus_entered"]

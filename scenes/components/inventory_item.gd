@@ -2,7 +2,6 @@ class_name InventoryItem
 extends Node2D
 
 @export var dimensions: Vector2i
-@export var texture: Texture2D
 
 var enable_snap: bool = false
 # set snap to the size of the grid cells
@@ -26,10 +25,12 @@ func _process(_delta: float) -> void:
 		position = get_global_mouse_position() - offset 
 
 func rotate_item() -> void:
-	rotated = !rotated
-	print(rotated)
 	var tween = get_tree().create_tween()
-	tween.tween_property(%Sprite2D, "rotation_degrees", 90, .1)
+	if rotated:
+		tween.tween_property(%Sprite2D, "rotation_degrees", 0.0, .1)
+	else:
+		tween.tween_property(%Sprite2D, "rotation_degrees", 90.0 , .1)
+	rotated = !rotated
 	await tween.finished
 	tween.kill()
 

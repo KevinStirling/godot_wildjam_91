@@ -5,13 +5,12 @@ extends Control
 @export var grid_cell: PackedScene
 @export var cell_size: int = 32
 
+@onready var grid_container = %GridContainer
+
 # stores the node reference occupying each cell
 var grid_contents: Array
-
 # stores the node refs to grid scene nodes
 var grid_ui: Array
-
-@onready var grid_container = %GridContainer
 
 func _ready() -> void:
 	build_grid_data()
@@ -20,30 +19,43 @@ func _ready() -> void:
 
 func _handle_item_drop(item: InventoryItem, pos: Vector2):
 	# check if global_position of item is within inventory bounds
-	var grid_bounds = global_position + Vector2(dimensions.x * cell_size, dimensions.y *cell_size)
-	print(grid_bounds)
-	if grid_bounds.x > pos.x && global_position.x < pos.x && grid_bounds.y > pos.y && global_position.y < pos.y:
+	var max_grid_bounds = global_position + Vector2(dimensions.x * cell_size, dimensions.y *cell_size)
+	var min_grid_bounds = global_position
+
+	# if max_grid_bounds > pos && min_grid_bounds < pos: 
+	if max_grid_bounds.x > pos.x && min_grid_bounds.x < pos.x && max_grid_bounds.y > pos.y && min_grid_bounds.y < pos.y:
 		# get the items dimensions
 		var item_area = item.get_area_size()
 		# adjust the position to be local based on the position in global space
+		var item_offset = Vector2(cell_size, cell_size) / 2
 		var adjusted_pos = abs(global_position - pos)
 		# calculate the min_coords (top left corner) and the max_coords (bottom right corner) of item
-		var min_coords = Vector2i(adjusted_pos.y / cell_size, adjusted_pos.x / cell_size)
+		var min_coords = Vector2i(adjusted_pos.x / cell_size, adjusted_pos.y / cell_size) 
 		var max_coords = min_coords + (item_area - Vector2i.ONE)
+		print("min_grid_bounds", min_grid_bounds,"max_grid_bounds", max_grid_bounds, "pos", pos, "adjusted_pos", adjusted_pos, "min", min_coords, "max", max_coords)
 		# get all overlapping grid coordinates
 		var colls = get_grid_area_collisions(min_coords, max_coords)
 		# check to see if the coords are valid drop locations
+		print("colls", colls)
+		print("dimensions", dimensions)
+		var bad : bool = false
 		for c in range(colls.size()):
-			if !grid_ui.has(c):
+			if colls[c].x >= dimensions.x || colls[c].y >= dimensions.y:
+				print("break", colls[c])
+				bad = true
 				break
-				if grid_contents[colls[c].x][colls[c].y] != null:
-					print("blocked")
-					# yeet 
 		
-		if item.rotated:
-			item.position = grid_ui[min_coords.x][min_coords.y].global_position+ Vector2(cell_size *.5, 0)
-		else:
-			item.position = grid_ui[min_coords.x][min_coords.y].global_position+ Vector2(0, cell_size * .5)
+			if grid_contents[colls[c].x][colls[c].y] != null:
+				bad = true
+				break
+				# yeet 
+		if !bad:
+			if !item.rotated:
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(cell_size *.5, 0)
+				# item.position = grid_ui[min_coords.x][min_coords.y].global_position
+				# item.position = min_coords.global_position+ Vector2(cell_size *.5, 0)
+			else:
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(0, cell_size * .5)
 
 
 		# loop through colls to put each coord in grid_contents
@@ -67,17 +79,6 @@ func get_grid_area_collisions(lower_bound: Vector2i, upper_bound: Vector2i) -> A
 		if !collisions.has(c):
 			collisions.append(Vector2i(lower_bound.x, lower_bound.y + (y + 1)))
 	return collisions
-
-# func _gui_input(event: InputEvent) -> void:
-# 	if event is InputEventMouseButton && event.is_released():
-# 		if event.button_index == MOUSE_BUTTON_LEFT:
-			# probably should check if its within the bounds of the grid firts and throw it	
-			# away if not.. with all this click and dragging
-			# position coords are flipped compared to grid_ui storage process, so calc the 
-			# event coords with x and y flipped before getting node ref from grid_ui
-			# var coords = Vector2i(event.position.y / cell_size, event.position.x / cell_size)
-			# print(grid_ui[coords.x][coords.y])
-			# If holding an item, get the item size and use it as an offset to determine the
 
 func build_grid_data() -> void:
 	var rows: Array = []
@@ -118,6 +119,8 @@ func can_place() -> void:
 	pass
 
 func place() -> void:
+	# iterate through returns array from get_grid_area_collisions
+	# add them each to the grid_contents at the same index
 	pass
 
 func remove() -> void:

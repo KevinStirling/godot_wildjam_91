@@ -1,7 +1,7 @@
 class_name InventoryItem
 extends Node2D
 
-@export var dimensions: Vector2i
+@export var dimensions: Vector2
 
 var enable_snap: bool = false
 # set snap to the size of the grid cells
@@ -14,6 +14,9 @@ var dragging: bool :
 	set(value):
 		MouseDrag.dragging = value
 		dragging = value
+var anchor_point: Vector2 :
+	get():
+		return global_position - (dimensions*snap)/ 2
 
 func _process(_delta: float) -> void:
 	if dragging:

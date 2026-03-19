@@ -9,8 +9,9 @@ anchor_right = 0.025
 anchor_bottom = 0.044000003
 offset_right = -32.0
 offset_bottom = -31.680002
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_necwt")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1050593124]
 texture = ExtResource("1_kslff")
-centered = false

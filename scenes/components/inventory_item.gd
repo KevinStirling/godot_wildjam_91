@@ -1,7 +1,7 @@
 class_name InventoryItem
 extends Node2D
 
-@export var dimensions: Vector2
+@export var stats : Resource
 
 var enable_snap: bool = false
 # set snap to the size of the grid cells
@@ -16,7 +16,13 @@ var dragging: bool :
 		dragging = value
 var anchor_point: Vector2 :
 	get():
-		return global_position - (dimensions*snap)/ 2
+		return global_position - (stats.dimensions*snap)/ 2
+
+func _ready() -> void:
+	%Sprite2D.texture = stats.sprite
+	%Button.size = stats.dimensions * snap
+	%Button.position = %Button.position - %Button.size / 2
+	
 
 func _process(_delta: float) -> void:
 	if dragging:
@@ -39,8 +45,8 @@ func rotate_item() -> void:
 
 func get_area_size() -> Vector2i:
 	if rotated:
-		return Vector2i(dimensions.y, dimensions.x)
-	return dimensions
+		return Vector2i(stats.dimensions.y, stats.dimensions.x)
+	return stats.dimensions
 
 func _on_button_button_down() -> void:
 	dragging = true
@@ -55,6 +61,5 @@ func _on_button_button_up() -> void:
 	offset = Vector2.ZERO
 	# emit a signal to mouse drag that it was dropped
 	# pass in the global_position where it was dropped
-	MouseDrag.item_dropped.emit(self, global_position)
+	MouseDrag.item_dropped.emit(self)
 	# subscribe to that signal from Inventory. 
-

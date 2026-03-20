@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemStats" format=3 uid="uid://du3gjgiiuxd2h"]
+
+[ext_resource type="Script" path="res://resources/item_stats.gd" id="1_hylvn"]
+[ext_resource type="Texture2D" uid="uid://n10wotmcfhis" path="res://assets/inventory/green_32x32.png" id="2_jg1ly"]
+
+[resource]
+script = ExtResource("1_hylvn")
+sprite = ExtResource("2_jg1ly")
+dimensions = Vector2(1, 1)
+metadata/_custom_type_script = "uid://cum18q3q1yx4a"

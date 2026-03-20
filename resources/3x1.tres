@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemStats" format=3 uid="uid://f5r7d28wkqa5"]
+
+[ext_resource type="Script" path="res://resources/item_stats.gd" id="1_4fwtp"]
+[ext_resource type="Texture2D" uid="uid://v2j3nur4qyif" path="res://assets/inventory/orange_96x32.png" id="2_3yry4"]
+
+[resource]
+script = ExtResource("1_4fwtp")
+sprite = ExtResource("2_3yry4")
+dimensions = Vector2(3, 1)
+metadata/_custom_type_script = "uid://cum18q3q1yx4a"

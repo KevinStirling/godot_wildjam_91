@@ -17,18 +17,19 @@ func _ready() -> void:
 	build_grid_ui()
 	MouseDrag.item_dropped.connect(_handle_item_drop)
 
-func _handle_item_drop(item: InventoryItem, pos: Vector2):
+func _handle_item_drop(item: InventoryItem):
 	# check if global_position of item is within inventory bounds
 	var max_grid_bounds = global_position + Vector2(dimensions.x * cell_size, dimensions.y *cell_size)
 	var min_grid_bounds = global_position
+	var pos = item.global_position
 
 	# if max_grid_bounds > pos && min_grid_bounds < pos: 
 	if max_grid_bounds.x > pos.x && min_grid_bounds.x < pos.x && max_grid_bounds.y > pos.y && min_grid_bounds.y < pos.y:
 		# get the items dimensions
 		var item_area = item.get_area_size()
+		var offset = Vector2(0,16) if !item.rotated else Vector2(16,0)
 		# adjust the position to be local based on the position in global space
-		var item_offset = Vector2(cell_size, cell_size) / 2
-		var adjusted_pos = abs(global_position - pos)
+		var adjusted_pos = abs(global_position - (pos + offset))
 		# calculate the min_coords (top left corner) and the max_coords (bottom right corner) of item
 		var min_coords = Vector2i(adjusted_pos.x / cell_size, adjusted_pos.y / cell_size) 
 		var max_coords = min_coords + (item_area - Vector2i.ONE)
@@ -51,11 +52,14 @@ func _handle_item_drop(item: InventoryItem, pos: Vector2):
 				# yeet 
 		if !bad:
 			if !item.rotated:
-				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(cell_size *.5, 0)
-				# item.position = grid_ui[min_coords.x][min_coords.y].global_position
-				# item.position = min_coords.global_position+ Vector2(cell_size *.5, 0)
+				# this is working for 2x1... but for 1x1 it shift the whole grid to the right. i dont this cell_size / dimension is enough to work for everything
+				# the current way only works for the 2x1, meaning it results in an offset of (16,0)
+				# needs to be (0,0) for 1x1
+				# needs to be (32,0) for 3x1
+				# also notice the difference in the edge placement for 1x1 vs 3x1
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(cell_size / item.stats.dimensions.x, 0)
 			else:
-				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(0, cell_size * .5)
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(0, cell_size / item.stats.dimensions.x)
 
 
 		# loop through colls to put each coord in grid_contents

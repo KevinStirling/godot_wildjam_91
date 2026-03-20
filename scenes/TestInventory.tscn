@@ -2,6 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://dmwruldwom37u" path="res://scenes/components/Inventory.tscn" id="1_lh0fq"]
 [ext_resource type="PackedScene" uid="uid://dsfqlvjfrc1y2" path="res://scenes/components/InventoryItem.tscn" id="2_6uflk"]
+[ext_resource type="Resource" uid="uid://g5vvml0qp0ex" path="res://resources/2x1.tres" id="3_6uflk"]
+[ext_resource type="Resource" uid="uid://du3gjgiiuxd2h" path="res://resources/1x1.tres" id="4_y0gpw"]
+[ext_resource type="Resource" uid="uid://f5r7d28wkqa5" path="res://resources/3x1.tres" id="5_e6m2q"]
 
 [node name="TestInventory" type="Node2D" unique_id=1087865670]
 
@@ -25,6 +28,12 @@ grow_vertical = 2
 
 [node name="InventoryItem" parent="." unique_id=162563165 instance=ExtResource("2_6uflk")]
 position = Vector2(294, 150)
-dimensions = Vector2i(2, 1)
+stats = ExtResource("3_6uflk")
+
+[node name="InventoryItem2" parent="." unique_id=140963406 instance=ExtResource("2_6uflk")]
+stats = ExtResource("4_y0gpw")
+
+[node name="InventoryItem3" parent="." unique_id=1501801385 instance=ExtResource("2_6uflk")]
+stats = ExtResource("5_e6m2q")
 
 [connection signal="focus_entered" from="Control/Inventory" to="Control/Inventory" method="_on_focus_entered"]

@@ -3,7 +3,7 @@ extends Node
 var current_item: InventoryItem
 var dragging: bool = false
 
-signal item_dropped(item: InventoryItem, pos: Vector2)
+signal item_dropped(item: InventoryItem)
 
 func _input(event: InputEvent) -> void:
 	if dragging:

@@ -12,6 +12,7 @@ var dragging: bool :
 	set(value):
 		MouseDrag.dragging = value
 		dragging = value
+var last_position : Array
 
 func _ready() -> void:
 	%Sprite2D.texture = stats.sprite
@@ -41,6 +42,7 @@ func _on_button_button_down() -> void:
 	dragging = true
 	MouseDrag.current_item = self
 	offset = get_global_mouse_position() - global_position
+	MouseDrag.item_picked.emit(self)
 
 func _on_button_button_up() -> void:
 	dragging = false

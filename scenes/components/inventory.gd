@@ -16,6 +16,8 @@ func _ready() -> void:
 	build_grid_data()
 	build_grid_ui()
 	MouseDrag.item_dropped.connect(_handle_item_drop)
+	MouseDrag.item_picked.connect(_handle_item_picked)
+
 
 func _handle_item_drop(item: InventoryItem):
 	# check if global_position of item is within inventory bounds
@@ -49,7 +51,6 @@ func _handle_item_drop(item: InventoryItem):
 			if grid_contents[colls[c].x][colls[c].y] != null:
 				bad = true
 				break
-				# yeet 
 		if !bad:
 			if !item.rotated:
 				# offset the position of the item based on the center point
@@ -58,13 +59,18 @@ func _handle_item_drop(item: InventoryItem):
 			else:
 				var os = Vector2(0, cell_size/2.0 * (item.stats.dimensions.x - 1))
 				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
+			place(colls, item)
+		else:
+			# fling 
+			# apply gravity
+			# set global_postion.y to + 10 or something
+			# let it fall off the screen
+			# when screen exited delete item
+			pass
 
-		# loop through colls to put each coord in grid_contents
-
-	# if not, fling the item away idk
-	# if is, get items origin, use items dimension to determin amount of space
-	# in the  grid needed
-	pass
+func _handle_item_picked(item: InventoryItem):
+	remove(item)
+	
 
 # returns all the indexes that the item collides with on the grid
 func get_grid_area_collisions(lower_bound: Vector2i, upper_bound: Vector2i) -> Array:
@@ -119,13 +125,14 @@ func array_builder(rows: int, cols: int) -> Array:
 func can_place() -> void:
 	pass
 
-func place() -> void:
-	# iterate through returns array from get_grid_area_collisions
-	# add them each to the grid_contents at the same index
-	pass
+func place(collisions: Array, item: InventoryItem) -> void:
+	item.last_position = collisions
+	for c in range(collisions.size()):
+		grid_contents[collisions[c].x][collisions[c].y] = item
 
-func remove() -> void:
-	pass
+func remove(item: InventoryItem) -> void:
+	for c in range(item.last_position.size()):
+		grid_contents[item.last_position[c].x][item.last_position[c].y] = null
 
 
 # wont work becuase the control cant detect the mouse when theres a node2d in the way

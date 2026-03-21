@@ -3,9 +3,7 @@ extends Node2D
 
 @export var stats : Resource
 
-var enable_snap: bool = false
-# set snap to the size of the grid cells
-var snap: int = 32
+var cell_size: int = 32
 var rotated: bool = false
 var offset: Vector2 = Vector2.ZERO
 var dragging: bool :
@@ -14,26 +12,17 @@ var dragging: bool :
 	set(value):
 		MouseDrag.dragging = value
 		dragging = value
-var anchor_point: Vector2 :
-	get():
-		return global_position - (stats.dimensions*snap)/ 2
 
 func _ready() -> void:
 	%Sprite2D.texture = stats.sprite
-	%Button.size = stats.dimensions * snap
+	%Button.size = stats.dimensions * cell_size
 	%Button.position = %Button.position - %Button.size / 2
-	
 
 func _process(_delta: float) -> void:
 	if dragging:
-		if enable_snap:
-			var new_pos = get_global_mouse_position() - offset 
-			position = Vector2(snapped(new_pos.x, snap), snapped(new_pos.y, snap))
-
-
 		position = get_global_mouse_position() - offset 
 
-func rotate_item() -> void:
+func rotate_90() -> void:
 	var tween = get_tree().create_tween()
 	if rotated:
 		tween.tween_property(%Sprite2D, "rotation_degrees", 0.0, .1)
@@ -53,13 +42,8 @@ func _on_button_button_down() -> void:
 	MouseDrag.current_item = self
 	offset = get_global_mouse_position() - global_position
 
-
 func _on_button_button_up() -> void:
-	print("button up triggered")
 	dragging = false
 	MouseDrag.current_item = null
 	offset = Vector2.ZERO
-	# emit a signal to mouse drag that it was dropped
-	# pass in the global_position where it was dropped
 	MouseDrag.item_dropped.emit(self)
-	# subscribe to that signal from Inventory. 

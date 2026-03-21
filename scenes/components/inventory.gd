@@ -52,15 +52,12 @@ func _handle_item_drop(item: InventoryItem):
 				# yeet 
 		if !bad:
 			if !item.rotated:
-				# this is working for 2x1... but for 1x1 it shift the whole grid to the right. i dont this cell_size / dimension is enough to work for everything
-				# the current way only works for the 2x1, meaning it results in an offset of (16,0)
-				# needs to be (0,0) for 1x1
-				# needs to be (32,0) for 3x1
-				# also notice the difference in the edge placement for 1x1 vs 3x1
-				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(cell_size / item.stats.dimensions.x, 0)
+				# offset the position of the item based on the center point
+				var os = Vector2(cell_size/2.0 * (item.stats.dimensions.x - 1), 0)
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
 			else:
-				item.position = grid_ui[min_coords.y][min_coords.x].global_position+ Vector2(0, cell_size / item.stats.dimensions.x)
-
+				var os = Vector2(0, cell_size/2.0 * (item.stats.dimensions.x - 1))
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
 
 		# loop through colls to put each coord in grid_contents
 
@@ -132,16 +129,16 @@ func remove() -> void:
 
 
 # wont work becuase the control cant detect the mouse when theres a node2d in the way
-func _on_mouse_entered() -> void:
-	if MouseDrag.dragging:
-		MouseDrag.current_item.enable_snap = true
-		# set movement of item to snapped
+# func _on_mouse_entered() -> void:
+# 	if MouseDrag.dragging:
+# 		MouseDrag.current_item.enable_snap = true
+# 		# set movement of item to snapped
+#
+#
+# func _on_mouse_exited() -> void:
+# 	if MouseDrag.dragging:
+# 		MouseDrag.current_item.enable_snap = false
 
-
-func _on_mouse_exited() -> void:
-	if MouseDrag.dragging:
-		MouseDrag.current_item.enable_snap = false
-
-
-func _on_focus_entered() -> void:
-	print("focued")
+#
+# func _on_focus_entered() -> void:
+# 	print("focued")

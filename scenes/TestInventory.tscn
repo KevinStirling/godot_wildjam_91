@@ -35,5 +35,3 @@ stats = ExtResource("4_y0gpw")
 
 [node name="InventoryItem3" parent="." unique_id=1501801385 instance=ExtResource("2_6uflk")]
 stats = ExtResource("5_e6m2q")
-
-[connection signal="focus_entered" from="Control/Inventory" to="Control/Inventory" method="_on_focus_entered"]

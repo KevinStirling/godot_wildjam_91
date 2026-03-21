@@ -53,23 +53,27 @@ func _handle_item_drop(item: InventoryItem):
 		if !bad:
 			if !item.rotated:
 				# offset the position of the item based on the center point
+				print("min_coords ", min_coords)
 				var os = Vector2(cell_size/2.0 * (item.stats.dimensions.x - 1), 0)
 				# item.position = grid_ui[colls[0].y][colls[0].x].global_position + os
 				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
 			else:
 				var os = Vector2(0, cell_size/2.0 * (item.stats.dimensions.x - 1))
-				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
+				item.global_position = grid_ui[min_coords.y][min_coords.x].global_position + os
 			place(colls, item)
 	else:
 		# fling 
 		# apply gravity
+		item.gravity_on = true
+		item.is_flung = true
 		# set global_postion.y to + 10 or something
 		# let it fall off the screen
 		# when screen exited delete item
 		pass
 
 func _handle_item_picked(item: InventoryItem):
-	remove(item)
+	if item.last_position.size() != 0:
+		remove(item)
 	
 
 # returns all the indexes that the item collides with on the grid

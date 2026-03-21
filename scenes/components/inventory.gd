@@ -30,6 +30,7 @@ func _process(_delta: float) -> void:
 				if colls[c].x >= dimensions.x || colls[c].y >= dimensions.y:
 					return
 				else:
+					print(colls)
 					grid_ui[colls[c].y][colls[c].x].is_hovered = true
 
 func _handle_item_drop(item: InventoryItem):
@@ -54,7 +55,8 @@ func _handle_item_drop(item: InventoryItem):
 				# offset the position of the item based on the center point
 				print("min_coords ", min_coords)
 				var os = Vector2(cell_size/2.0 * (item.stats.dimensions.x - 1), 0)
-				item.global_position = grid_ui[min_coords.y][min_coords.x].global_position + os
+				# item.position = grid_ui[colls[0].y][colls[0].x].global_position + os
+				item.position = grid_ui[min_coords.y][min_coords.x].global_position + os
 			else:
 				var os = Vector2(0, cell_size/2.0 * (item.stats.dimensions.x - 1))
 				item.global_position = grid_ui[min_coords.y][min_coords.x].global_position + os
@@ -99,6 +101,10 @@ func get_grid_area_collisions(item: InventoryItem) -> Array:
 			var c = Vector2i(min_coords.x, min_coords.y + (y + 1))
 			if !collisions.has(c):
 				collisions.append(Vector2i(min_coords.x, min_coords.y + (y + 1)))
+		
+		for x in collisions:
+			if x.x > dimensions.x || x.y > dimensions.y:
+				collisions.clear()
 	return collisions
 
 func build_grid_data() -> void:
